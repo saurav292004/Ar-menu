@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Saurav AR MenuVerse — Basic (Instant Demo)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <!-- model-viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    :root { --brand:#6c5ce7 }
+    html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0f0f14;color:#fff}
+    .splash{position:fixed;inset:0;display:grid;place-items:center;background:#0f0f14;z-index:5;transition:opacity .4s}
+    .box{text-align:center}
+    .title{font-weight:800;margin:.2rem 0}
+    .tag{opacity:.85}
+    button{margin-top:1rem;background:var(--brand);color:#fff;border:0;border-radius:12px;padding:.7rem 1rem;font-weight:700}
+    .contact{position:fixed;left:10px;right:10px;bottom:10px;display:flex;justify-content:space-between;gap:8px;z-index:2}
+    .pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(6px);padding:.45rem .7rem;border-radius:999px}
+    model-viewer{width:100%;height:100%;--poster-color:transparent;background:radial-gradient(80% 60% at 50% 40%, #1b1b27 0%, #0f0f14 60%)}
+    .loading{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:4px solid #444;border-top-color:#fff;width:42px;height:42px;border-radius:50%;animation:spin 1s linear infinite;z-index:1}
+    @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div id="splash" class="splash">
+    <div class="box">
+      <div style="font-size:64px;line-height:0.8">🕶️🍽️</div>
+      <div class="title">Saurav AR MenuVerse</div>
+      <div class="tag">Basic Plan • Instant demo</div>
+      <button id="start">Start</button>
+    </div>
+  </div>
+
+  <div class="contact">
+    <div class="pill">📞 +91-XXXXXXXXXX</div>
+    <div class="pill">✉ hello@menuverse.example</div>
+  </div>
+
+  <div class="loading" id="spinner"></div>
+
+  <model-viewer id="viewer"
+    src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+    alt="Demo dish"
+    camera-controls
+    auto-rotate
+    ar
+    shadow-intensity="1"
+    exposure="1.1"
+    reveal="interaction">
+  </model-viewer>
+
+  <script>
+    const splash = document.getElementById('splash');
+    const start = document.getElementById('start');
+    const spinner = document.getElementById('spinner');
+    const viewer = document.getElementById('viewer');
+
+    start.addEventListener('click', () => {
+      splash.style.opacity = 0;
+      setTimeout(()=> splash.style.display='none', 420);
+      // kick model loading
+      viewer.dismissPoster?.();
+    });
+
+    viewer.addEventListener('load', () => spinner.style.display = 'none');
+    viewer.addEventListener('error', (e) => {
+      spinner.style.display = 'none';
+      alert('Model failed to load.\n' + (e?.detail?.message || 'Unknown error'));
+    });
+  </script>
+</body>
+</html>
